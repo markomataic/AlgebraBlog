@@ -44,4 +44,8 @@ After you start server type http://localhost:8000 to your browser
 
 Algebra BOX is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
 
+<<<<<<< HEAD
 Marko Mataic
+=======
+Monika Galic
+>>>>>>> d912cae69dcc10b97772c2b5bc95c78547e4e9c1
