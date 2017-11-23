@@ -17,7 +17,7 @@ class DashboardController extends Controller
     public function __construct()
     {
         
-        $this->middleware('sentinel.role:administrator');
+        $this->middleware('sentinel.auth');
     }
 
     /**
