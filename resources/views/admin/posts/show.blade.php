@@ -13,13 +13,17 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-10">
-			<div class = "panel-heading">
-				<h1>{{ $post->title }}</h1>
-				<small><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ $post->user->email }} | <span class="glyphicon glyphicon-time" aria-hidden="true"></span> </small> {{ \Carbon\Carbon::createFromTimeStamp(strtotime($post->created_at))->diffForHumans() }}
-			</div>
-			<div class = "panel-body">
-				{!! $post->content !!}
-			</div>
+            <div class="panel-heading">
+                <h1>{{ $post->title }}</h1>
+            <small>
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                {{ $post->user->email }} | 
+                <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                {{ \Carbon\Carbon::createFromTimeStamp(strtotime($post->created_at))->diffForHumans() }}</small>
+            </div>
+            <div class="panel-body">
+                {!! $post->content !!}
+            </div>
         </div>
     </div>
 @stop

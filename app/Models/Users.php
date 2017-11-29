@@ -6,41 +6,52 @@ use Cartalyst\Sentinel\Users\EloquentUser;
 
 class Users extends EloquentUser
 {
+    
 	/**
-	 *The Eloquent posts model name
-	 *
-	 *@var string 
-	 */	
-	 protected static $postsModel = 'App\Models\Post';
-	 
-	 /**
-	 *The Eloquent comments model name
-	 *
-	 *@var string 
-	 */	
-	 
-	 protected static $commentsModel = 'App\Models\Comment';
+	*
+	* The Eloquent posts model name
+	*
+	* @var string
+	*
+	*/
+
+	protected static $postsModel = 'App\Models\Post';
 
 	/**
-	 *Returns The posts relationship
-	 *
-	 *@return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
+	*
+	* The Eloquent comments model name
+	*
+	* @var string
+	*
+	*/
 
-	public function posts()
-	{
-		return $this->hasMany(static::$postsModel,'user_id');
-	}	
-	
+	protected static $commentsModel = 'App\Models\Comment';
+
 	/**
-	 *Returns The posts relationship
-	 *
-	 *@return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
+	*
+	* Returns the posts relationship
+	*
+	* @return \Illuminate\Database\Eloquent\Relations\HasMany
+	*
+	*/
 
-	public function comments()
-	{
-		return $this->hasMany(static::$commentsModel,'user_id');
-	}	
-	
+	public function posts(){
+
+		return $this->hasMany(static::$postsModel, 'user_id');
+
+	}
+
+	/**
+	*
+	* Returns the comments relationship
+	*
+	* @return \Illuminate\Database\Eloquent\Relations\HasMany
+	*
+	*/
+
+	public function comments(){
+
+		return $this->hasMany(static::$commentsModel, 'user_id');
+
+	}
 }

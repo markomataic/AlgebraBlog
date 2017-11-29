@@ -3,19 +3,23 @@
 @section('title', 'Create New Post')
 
 @push('stylesheet')
+<!-- Include Editor style. -->
 <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.7.1/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.7.1/css/froala_style.min.css' rel='stylesheet' type='text/css' />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
- 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
 @endpush
 
 @push('script')
+<!-- Include JS file. -->
 <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.7.1/js/froala_editor.min.js'></script>
-<script> $(function() { $('#post-content').froalaEditor({
-	height:300
-	}); 
-	}); </script>
+<!-- Initialize the editor. -->
+<script> 
+    $(function() { 
+            $('#post-content').froalaEditor(
+            {'height': 300}
+            )}); 
+</script>
 @endpush
 
 @section('content')
@@ -33,8 +37,7 @@
                         {!! ($errors->has('title') ? $errors->first('title', '<p class="text-danger">:message</p>') : '') !!}
                     </div>
                     <div class="form-group {{ ($errors->has('content')) ? 'has-error' : '' }}">
-						<textarea class="form-control" name="content" id="post-content" ></textarea>
-						
+                        <textarea class="form-control" name="content" id="post-content"></textarea>
                         {!! ($errors->has('content') ? $errors->first('content', '<p class="text-danger">:message</p>') : '') !!}
                     </div>
                     <input name="_token" value="{{ csrf_token() }}" type="hidden">

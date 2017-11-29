@@ -4,23 +4,24 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Sentinel;
 
-
 class PostController extends Controller
 {
-	 /**
+
+    /**
    * Set middleware to quard controller.
    *
    * @return void
    */
     public function __construct()
     {
-        
         $this->middleware('sentinel.auth');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,15 +29,15 @@ class PostController extends Controller
      */
     public function index()
     {
-		if(Sentinel::inRole('administrator')){
-			 $posts = Post::orderBy('created_at', 'DESC')->paginate(10);
-		
-		return view('admin.posts.index', ['posts'=>$posts]);
-		}else{
-			$user_id = Sentinel::getUser()->id;
-			$posts = Post::where('user_id', $user_id)->orderBy('created_at', 'DESC')->paginate(10);
-		}
-        
+        if (Sentinel::inRole('administrator')) {
+            $posts = Post::orderBy('created_at', 'DESC')->paginate(10);
+            return view('admin.posts.index', ['posts' => $posts]);
+        }else{
+            $user_id = Sentinel::getUser()->id;
+            $posts = Post::where('user_id', $user_id)->orderBy('created_at', 'DESC')->paginate(10);;
+            return view('admin.posts.index', ['posts' => $posts]);
+        }
+
     }
 
     /**
@@ -46,7 +47,7 @@ class PostController extends Controller
      */
     public function create()
     {
-      return view('admin.posts.create');
+        return view('admin.posts.create');
     }
 
     /**
@@ -57,20 +58,24 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-		$user_id = Sentinel::getUser()->id;
-        $input = $request->except(['_token']);
-		
-		$data = array(
-		'user_id' => $user_id,
-		'title'   => trim($input['title']),
-		'content' => $input['content']
-		);
-		
-		$post = new Post();
-		$post->savePost($data);
-		
-		$message = session()->flash('success', 'You have successfuly add a new post.');
-		return redirect()->route('admin.posts.index')->withFlashMessaeg($message);
+        $user_id = Sentinel::getUser()->id;
+        $input = $request->except('_token');
+
+        $data = array(
+
+            'user_id'   =>  $user_id,
+            'title'   =>  trim($input['title']),
+            'content'   =>  $input['content']
+
+            );
+
+        $post = new Post();
+
+        $post->savePost($data);
+
+        $message = session()->flash('success', 'You have successfully add new post.');
+
+        return redirect()->route('admin.posts.index')->withFlashMessage($message);
     }
 
     /**
@@ -82,7 +87,8 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-		return view('admin.posts.show', ['post' => $post]);
+
+        return view('admin.posts.show', ['post'=>$post]);
     }
 
     /**
@@ -93,7 +99,15 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user_id = Sentinel::getUser()->id;
+        $post = Post::find($id);
+
+       // if ($user_id == $post->user_id) {
+            return view('admin.posts.edit', ['post'=>$post]);
+        //}else{
+          //  $message = session()->flash('info', 'You cannot edit this post.');
+          //  return redirect()->route('admin.posts.index')->withFlashMessage($message);
+        // }
     }
 
     /**
@@ -103,9 +117,24 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, $id)
     {
-        //
+
+        $post = Post::find($id);
+        $input = $request->except('_token, user_id, id');
+
+        $data = array(
+
+            'title'   =>  trim($input['title']),
+            'content'   =>  $input['content']
+
+            );
+
+        $post->updatePost($data);
+
+        $message = session()->flash('success', 'You have successfully updated the post with id '.$post->id);
+
+        return redirect()->route('admin.posts.index')->withFlashMessage($message);
     }
 
     /**
@@ -116,10 +145,11 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-		$post = Post::find($id);
-		$post->delete();
-		
-		$message = session()->flash('success', 'You have successfuly delete a post.');
-		return redirect()->route('admin.posts.index')->withFlashMessaeg($message);
+        $post = Post::find($id);
+        $post->delete();
+
+        $message = session()->flash('success', 'You have successfully delete a post.');
+
+        return redirect()->route('admin.posts.index')->withFlashMessage($message);
     }
 }

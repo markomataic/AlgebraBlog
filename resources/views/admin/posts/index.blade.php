@@ -15,29 +15,33 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="table-responsive">
-			@if (count($posts) > 0)
+                @if(count($posts) > 0)
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>Title</th>
                             <th>User</th>
+                            <th>Created at</th>
+                            <th>Updated at</th>
                             <th>Options</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($posts as $post)
                             <tr>
-							<td>
-							<a href="{{ route('admin.posts.show', $post->id) }}" class="btn btn-default">
-								{{ $post->title }}
-							</a>
-							</td>
-                                <td>{{ $post->user->email }}</td>
                                 <td>
-                                    <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-default">
+                                    <a href="{{ route('admin.posts.show', $post->id) }}">{{ $post->title }}</a>
+                                </td>
+                                <td>{{ $post->user->email }}</td>
+                                <td>{{ \Carbon\Carbon::createFromTimeStamp(strtotime($post->created_at))->diffForHumans() }}</td>
+                                <td>{{ \Carbon\Carbon::createFromTimeStamp(strtotime($post->updated_at))->diffForHumans() }}</td>
+                                <td>
+                                    
+                                    <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-default {{ (Sentinel::getUser()->id != $post->user_id) ? 'disabled' : '' }}">
                                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                         Edit
                                     </a>
+                                   
                                     <a href="{{ route('admin.posts.destroy', $post->id) }}" class="btn btn-danger action_confirm" data-method="delete" data-token="{{ csrf_token() }}">
                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                         Delete
@@ -47,11 +51,11 @@
                         @endforeach
                     </tbody>
                 </table>
-				@else
-				{{ 'No Posts!' }}
-				@endif
+                @else
+                {{ 'No Posts!' }}
+                @endif
             </div>
-			{!! $posts->render() !!}
+            {!! $posts->render() !!}
         </div>
     </div>
 @stop
