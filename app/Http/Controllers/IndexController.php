@@ -62,7 +62,7 @@ class IndexController extends Controller
 
     $comment->saveComment($data);
 
-    $message = session()->flash('success', 'You have successfully add new comment.');
+    $message = session()->flash('success', 'You have successfully added new comment.');
 
     return redirect()->back()->withFlashMessage($message);
 

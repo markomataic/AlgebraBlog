@@ -64,8 +64,14 @@
                 @foreach($post->comments as $comment)
 
                 <div class="media">
+				<div class = "media-left">
+					<a href="#">
+						<img class = "media-object" src="https://www.gravatar.com/avatar/ {{ md5($comment->user->email) }}?d=mm">
+					</a>
+					</div>
                   <div class="media-body">
                     <div>
+					
                          <small>
                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                             {{ $comment->user->email }} | 
@@ -79,13 +85,16 @@
                 <hr>
 
                 @endforeach
-
+				
             @else
 
             <p>No comments!</p>
 
             @endif
+			
 
+			
+			
         </div>
     </div>
 
